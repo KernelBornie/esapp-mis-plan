@@ -1,0 +1,356 @@
+@import "tailwindcss";
+
+@layer base {
+  body {
+    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: #0f172a;
+    background-color: #f8fafc;
+  }
+}
+
+/* ================= CERTIFICATE BASE: GOVERNMENT DOUBLE-LINE BORDER ================= */
+/* Formal government document appearance: Emerald Green outer line (#064e3b) + Metallic Gold inner accent (#c59b27) */
+.certificate,
+.cert-sheet {
+  position: relative;
+  background: #ffffff;
+  border: 4px solid #064e3b; /* Emerald green outer line */
+  box-shadow: 
+    inset 0 0 0 2px #c59b27, /* Metallic gold inner line */
+    inset 0 0 0 4px #064e3b, /* Inner emerald green framing line */
+    0 12px 36px -4px rgba(6, 78, 59, 0.18);
+  border-radius: 12px;
+}
+
+/* Interior metallic gold pinstripe accent frame */
+.certificate::after,
+.cert-sheet::after {
+  content: "";
+  position: absolute;
+  inset: 7px;
+  border: 1.5px solid rgba(197, 155, 39, 0.65); /* Metallic gold inner accent */
+  border-radius: 7px;
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Double-line border utility for tables, frames, and cards within certificate */
+.cert-double-line-border {
+  border: 3px solid #064e3b !important; /* Emerald green outer */
+  box-shadow: inset 0 0 0 1.5px #c59b27 !important; /* Metallic gold inner accent */
+}
+
+/* Subtle Gradient Table Headers using Zambian Flag Colors (Green, Black, Red, Orange) */
+.cert-table-header-gradient {
+  background: linear-gradient(135deg, #064e3b 0%, #064e3b 45%, #0f172a 75%, #18181b 90%, #2b1108 100%) !important;
+  color: #ffffff !important;
+  border-bottom: 2px solid #c59b27 !important; /* Metallic gold bottom accent */
+}
+
+.certificate::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 60%;
+  background-image: url('/assets/logos/zambia-coat-of-arms.png');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  opacity: 0.04;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.certificate > * {
+  position: relative;
+  z-index: 2;
+}
+
+/* Classical Formal Decorative Corner Elements */
+.cert-corner {
+  position: absolute;
+  width: 24px;
+  height: 24px;
+  pointer-events: none;
+  z-index: 5;
+}
+
+.cert-corner-tl {
+  top: 9px;
+  left: 9px;
+  border-top: 3px solid #064e3b;
+  border-left: 3px solid #064e3b;
+}
+.cert-corner-tl::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid #c59b27;
+  border-left: 2px solid #c59b27;
+}
+.cert-corner-tl::after {
+  content: "✦";
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  font-size: 8px;
+  line-height: 1;
+  color: #c59b27;
+}
+
+.cert-corner-tr {
+  top: 9px;
+  right: 9px;
+  border-top: 3px solid #064e3b;
+  border-right: 3px solid #064e3b;
+}
+.cert-corner-tr::before {
+  content: "";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  border-top: 2px solid #c59b27;
+  border-right: 2px solid #c59b27;
+}
+.cert-corner-tr::after {
+  content: "✦";
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  font-size: 8px;
+  line-height: 1;
+  color: #c59b27;
+}
+
+.cert-corner-bl {
+  bottom: 9px;
+  left: 9px;
+  border-bottom: 3px solid #064e3b;
+  border-left: 3px solid #064e3b;
+}
+.cert-corner-bl::before {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  width: 14px;
+  height: 14px;
+  border-bottom: 2px solid #c59b27;
+  border-left: 2px solid #c59b27;
+}
+.cert-corner-bl::after {
+  content: "✦";
+  position: absolute;
+  bottom: 2px;
+  left: 2px;
+  font-size: 8px;
+  line-height: 1;
+  color: #c59b27;
+}
+
+.cert-corner-br {
+  bottom: 9px;
+  right: 9px;
+  border-bottom: 3px solid #064e3b;
+  border-right: 3px solid #064e3b;
+}
+.cert-corner-br::before {
+  content: "";
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  width: 14px;
+  height: 14px;
+  border-bottom: 2px solid #c59b27;
+  border-right: 2px solid #c59b27;
+}
+.cert-corner-br::after {
+  content: "✦";
+  position: absolute;
+  bottom: 2px;
+  right: 2px;
+  font-size: 8px;
+  line-height: 1;
+  color: #c59b27;
+}
+
+/* Zambian Flag Color Ribbon: Exact Sequence (Green, Black, Red, Orange) */
+.zambia-flag-ribbon {
+  height: 6px;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  border-radius: 9999px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+  border: 0.5px solid rgba(197, 155, 39, 0.35);
+}
+
+.zambia-flag-ribbon .stripe-green {
+  height: 100%;
+  flex: 4;
+  background-color: #064e3b; /* Zambian Emerald Green */
+}
+
+.zambia-flag-ribbon .stripe-black {
+  height: 100%;
+  flex: 1.2;
+  background-color: #0a0a0a; /* Zambian Black */
+}
+
+.zambia-flag-ribbon .stripe-red {
+  height: 100%;
+  flex: 1.2;
+  background-color: #dc2626; /* Zambian Red */
+}
+
+.zambia-flag-ribbon .stripe-orange {
+  height: 100%;
+  flex: 1.4;
+  background-color: #ea580c; /* Zambian Copper Orange */
+}
+
+/* Backward-compatible accent ribbon */
+.zambia-accent-ribbon {
+  height: 4px;
+  width: 100%;
+  display: flex;
+  overflow: hidden;
+  border-radius: 9999px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08);
+}
+
+/* ================= CERTIFICATE HEADER WITH TRIPLE LOGOS ================= */
+.cert-header {
+  width: 100%;
+  border-collapse: collapse;
+  border-bottom: 3px solid #1a5632;
+  padding-bottom: 8px;
+  margin-bottom: 10px;
+}
+
+.cert-header .logo-cell {
+  vertical-align: middle;
+  text-align: center;
+  padding: 4px;
+}
+
+.cert-header .logo-left   { width: 16%; }
+.cert-header .logo-centre { width: 16%; }
+.cert-header .logo-right  { width: 16%; }
+.cert-header .title-cell  { width: 52%; text-align: center; vertical-align: middle; padding: 4px 8px; }
+
+.cert-header .logo {
+  max-height: 72px;
+  max-width: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.cert-header .logo-emblem {
+  max-height: 82px; /* national emblem slightly larger */
+  display: block;
+  margin: 0 auto;
+}
+
+.cert-header .logo-caption {
+  font-size: 8px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: .5px;
+  margin-top: 4px;
+  font-weight: 600;
+}
+
+.cert-header .title-cell h1 { margin: 0; color: #1a5632; font-size: 14px; letter-spacing: 1px; font-weight: 800; }
+.cert-header .title-cell h2 { margin: 2px 0; color: #1a5632; font-size: 12px; font-weight: 700; }
+.cert-header .title-cell h3 { margin: 4px 0 2px; color: #444; font-size: 10px; font-weight: normal; }
+.cert-header .title-cell h4 { margin: 6px 0 0; color: #1a5632; font-size: 12px; letter-spacing: .5px; font-weight: 800; }
+.cert-header .contract-ref  { margin: 4px 0 0; font-size: 9px; color: #666; font-family: monospace; font-weight: 600; }
+
+/* ================= PRINT COLOUR & LAYOUT FIDELITY ================= */
+@media print {
+  @page {
+    size: A4 portrait;
+    margin: 10mm 10mm;
+  }
+
+  body {
+    background: #ffffff !important;
+    color: #000000 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  /* Hide all dashboard chrome and navigation elements when printing */
+  nav,
+  header,
+  .no-print,
+  #btn-print-cert,
+  button,
+  .modal-backdrop,
+  .modal-overlay {
+    display: none !important;
+  }
+
+  /* Force certificate modal to fill printed page */
+  .certificate-modal-wrapper {
+    position: static !important;
+    background: transparent !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    display: block !important;
+  }
+
+  .certificate-card-container {
+    max-width: 100% !important;
+    width: 100% !important;
+    border: none !important;
+    box-shadow: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .certificate,
+  .cert-sheet {
+    box-shadow: inset 0 0 0 2px #c59b27, inset 0 0 0 4px #064e3b !important;
+    border: 4px solid #064e3b !important;
+    page-break-after: always;
+    padding: 8mm !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .certificate::before {
+    opacity: 0.05 !important;
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .cert-header .logo,
+  .cert-header .logo-emblem {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+
+  .roster-grid,
+  .approver-grid,
+  .meta-table,
+  .criteria-table {
+    page-break-inside: avoid !important;
+  }
+
+  * {
+    -webkit-print-color-adjust: exact !important;
+    print-color-adjust: exact !important;
+  }
+}
+
