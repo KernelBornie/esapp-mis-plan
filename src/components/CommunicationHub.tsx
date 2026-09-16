@@ -1,28 +1,10 @@
 import React, { useState } from 'react';
 import { 
-  Users, 
-  Search, 
-  Filter, 
-  Phone, 
-  Mail, 
-  ShieldCheck, 
-  Layers, 
-  Plus, 
-  Calendar, 
-  AlertCircle, 
-  FileText,
-  FolderOpen,
-  MessageSquare,
-  Clock,
-  X,
-  GraduationCap,
-  Database,
-  Copy,
-  Check,
-  Award
+  Users, Search, Phone, Mail, ShieldCheck, Layers, Plus, Calendar,
+  AlertCircle, MessageSquare, Clock, X, GraduationCap, Database, Copy, Check,
 } from 'lucide-react';
 import { Contact, CommunicationMatrixItem, EscalationLevelRule, InterfaceType, OrganisationType } from '../types';
-import { GROUP_MEMBERS, GROUP_MEETING_PROTOCOLS, SQL_TEAM_ASSIGNMENT_SEED, GOLDEN_RULE_TEXT } from '../data/groupTeamData';
+import { GROUP_MEMBERS, GROUP_MEETING_PROTOCOLS, SQL_TEAM_ASSIGNMENT_SEED, GOLDEN_RULE_TEXT, ACADEMIC_SUPERVISOR } from '../data/groupTeamData';
 
 interface CommunicationHubProps {
   contacts: Contact[];
@@ -43,6 +25,9 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
   const [selectedInterface, setSelectedInterface] = useState<string>('all');
   const [isAddModalOpen, setIsAddModalOpen] = useState<boolean>(false);
   const [sqlCopied, setSqlCopied] = useState<boolean>(false);
+
+  // Dynamic team size: 8 students + 1 academic supervisor
+  const teamSize = GROUP_MEMBERS.length + 1;
 
   // Form state for new contact
   const [newFullName, setNewFullName] = useState('');
@@ -83,7 +68,6 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
       isActive: true,
     });
     setIsAddModalOpen(false);
-    // Reset
     setNewFullName('');
     setNewRoleTitle('');
     setNewEmail('');
@@ -93,7 +77,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
 
   return (
     <div className="space-y-6">
-      {/* Top Banner */}
+      {/* ============ TOP BANNER + SUB-NAV ============ */}
       <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs">
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div>
@@ -104,11 +88,12 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
               Governance, Contact Matrix & Official Channel Directory
             </h2>
             <p className="text-xs text-slate-500 mt-1 max-w-2xl">
-              Implements Step 1 through Step 6 of the contractual communication framework. Establishes named counterpart interfaces between UNZA, the Ministry of Agriculture, and external system custodians (PASTEL & SAPP register).
+              Implements Step 1 through Step 6 of the contractual communication framework.
+              Establishes named counterpart interfaces between UNZA Group 6, the Ministry of
+              Agriculture, and external system custodians (PASTEL & SAPP register).
             </p>
           </div>
 
-          {/* Sub Navigation Buttons */}
           <div className="flex flex-wrap items-center gap-1 bg-slate-100 p-1 rounded-lg self-start md:self-center shrink-0">
             <button
               onClick={() => setActiveSubTab('contacts')}
@@ -125,7 +110,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
               }`}
             >
               <GraduationCap className="w-3.5 h-3.5 text-emerald-700" />
-              UNZA Team (3)
+              UNZA Team ({teamSize})
             </button>
             <button
               onClick={() => setActiveSubTab('matrix')}
@@ -155,10 +140,9 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
         </div>
       </div>
 
-      {/* Subtab 1: Contact Matrix */}
+      {/* ============ SUBTAB: CONTACT MATRIX ============ */}
       {activeSubTab === 'contacts' && (
         <div className="space-y-4">
-          {/* Golden Rule Callout Banner */}
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-4 flex items-start gap-3 shadow-2xs">
             <AlertCircle className="w-5 h-5 text-amber-700 shrink-0 mt-0.5" />
             <div className="text-xs">
@@ -169,7 +153,6 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
             </div>
           </div>
 
-          {/* Controls Bar */}
           <div className="bg-white border border-slate-200 rounded-xl p-4 shadow-2xs flex flex-col md:flex-row md:items-center justify-between gap-4">
             <div className="flex flex-wrap items-center gap-3">
               <div className="relative">
@@ -183,7 +166,6 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                 />
               </div>
 
-              {/* Org filter */}
               <div className="flex items-center gap-1 text-xs">
                 <span className="font-semibold text-slate-500">Org:</span>
                 <select
@@ -198,7 +180,6 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                 </select>
               </div>
 
-              {/* Interface Filter */}
               <div className="flex items-center gap-1 text-xs">
                 <span className="font-semibold text-slate-500">Interface:</span>
                 <select
@@ -226,7 +207,6 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
             </button>
           </div>
 
-          {/* Contact Cards Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {filteredContacts.map((c) => (
               <div 
@@ -245,42 +225,14 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                       }`}>
                         {c.organisation}
                       </span>
-                      {c.studentId && (
-                        <span className="text-[10px] font-mono font-bold bg-purple-100 text-purple-800 border border-purple-200 px-2 py-0.5 rounded-full">
-                          ID: {c.studentId}
-                        </span>
-                      )}
-                      {c.cluster && (
-                        <span className="text-[10px] font-medium bg-slate-100 text-slate-700 px-1.5 py-0.5 rounded border border-slate-200">
-                          {c.cluster}
-                        </span>
-                      )}
                     </div>
-                    <h3 className="text-sm font-bold text-slate-900 mt-1.5">
-                      {c.fullName}
-                    </h3>
+                    <h3 className="text-sm font-bold text-slate-900 mt-1.5">{c.fullName}</h3>
                     <p className="text-xs text-slate-500 font-medium">{c.roleTitle}</p>
                   </div>
-
                   <span className="text-[11px] font-semibold text-slate-600 bg-slate-100 px-2 py-0.5 rounded shrink-0">
                     {c.interfaceType}
                   </span>
                 </div>
-
-                {c.contractRoles && c.contractRoles.length > 0 && (
-                  <div className="bg-slate-50 p-2 rounded-lg border border-slate-100 space-y-1">
-                    <span className="text-[10px] font-bold text-slate-600 uppercase tracking-wider block">
-                      Consolidated Contract Roles ({c.contractRoles.length}):
-                    </span>
-                    <div className="flex flex-wrap gap-1">
-                      {c.contractRoles.map((role, idx) => (
-                        <span key={idx} className="text-[10px] font-medium bg-white text-slate-700 px-1.5 py-0.5 rounded border border-slate-200">
-                          {role}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
 
                 <p className="text-xs text-slate-600 leading-relaxed bg-slate-50 p-2.5 rounded-lg border border-slate-100">
                   {c.responsibilities}
@@ -308,10 +260,9 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
         </div>
       )}
 
-      {/* Subtab: UNZA Student Group Team Portfolio */}
+      {/* ============ SUBTAB: UNZA TEAM ============ */}
       {activeSubTab === 'team' && (
         <div className="space-y-6">
-          {/* Golden Rule Callout Banner */}
           <div className="bg-amber-50 border border-amber-200 rounded-xl p-5 shadow-2xs">
             <div className="flex items-start gap-3.5">
               <div className="p-2 bg-amber-100 rounded-lg text-amber-800 shrink-0">
@@ -325,13 +276,16 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                   "{GOLDEN_RULE_TEXT}"
                 </p>
                 <div className="text-[11px] text-amber-800 mt-1">
-                  Enforced across all 3 group portfolios: Ruth Kamwendo (Governance &amp; Lead), Bwalya Mumba (Technical &amp; Architecture), and Bornface Kangombe (Data &amp; GIS).
+                  Enforced across 8 UNZA Group 6 members across 7 functional clusters
+                  (Governance &amp; Lead, Technical &amp; Architecture, Data &amp; GIS, Quality
+                  &amp; Compliance, Business Analysis, UI/UX &amp; Training, Integration
+                  &amp; Support) under the supervision of Mr. Martin Phiri.
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Team Portfolio Summary Cards */}
+          {/* 8 Student Portfolio Cards */}
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
             {GROUP_MEMBERS.map((member) => (
               <div 
@@ -339,7 +293,6 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                 className="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs flex flex-col justify-between space-y-4 hover:border-slate-300 transition-all"
               >
                 <div className="space-y-3">
-                  {/* Card Header */}
                   <div className="flex items-start justify-between gap-2">
                     <div>
                       <div className="flex flex-wrap items-center gap-1.5">
@@ -355,17 +308,15 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                       </h3>
                       <p className="text-xs font-semibold text-emerald-700">{member.primaryPortfolio}</p>
                     </div>
-
                     <span className="text-[11px] font-medium text-slate-500 bg-slate-100 px-2 py-0.5 rounded shrink-0">
                       {member.authority}
                     </span>
                   </div>
 
-                  {/* Portfolio Financial & Milestone Weight */}
                   <div className="bg-slate-50 border border-slate-200 rounded-lg p-3 grid grid-cols-2 gap-2 text-xs">
                     <div>
                       <span className="text-[10px] text-slate-500 block uppercase font-semibold">Deliverable Share</span>
-                      <span className="text-sm font-bold text-slate-800">{member.portfolioPercentage}% of Contract</span>
+                      <span className="text-sm font-bold text-slate-800">{member.portfolioPercentage}%</span>
                     </div>
                     <div>
                       <span className="text-[10px] text-slate-500 block uppercase font-semibold">Value Certifiable</span>
@@ -373,10 +324,9 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                     </div>
                   </div>
 
-                  {/* Consolidated Contract Roles */}
                   <div className="space-y-1.5">
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">
-                      Contract Roles Consolidated ({member.contractRoles.length}):
+                      Contract Roles ({member.contractRoles.length}):
                     </span>
                     <div className="flex flex-wrap gap-1">
                       {member.contractRoles.map((r, i) => (
@@ -387,18 +337,11 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                     </div>
                   </div>
 
-                  {/* Replaces Original Staff */}
-                  <div className="text-[11px] text-slate-500">
-                    <span className="font-semibold text-slate-600">Replaces Original Proposal Roles:</span>{' '}
-                    <span>{member.replacesOriginals && member.replacesOriginals.length > 0 ? member.replacesOriginals.join(', ') : 'Direct Group 6 Appointment'}</span>
-                  </div>
-
-                  {/* Deliverables Owned vs Supported */}
                   <div className="space-y-1 text-xs">
                     <div className="flex items-start gap-1">
                       <span className="font-semibold text-slate-700 shrink-0">Owned Gates:</span>
                       <div className="flex flex-wrap gap-1">
-                        {(member.ownedDeliverables || []).length > 0 ? (
+                        {member.ownedDeliverables.length > 0 ? (
                           member.ownedDeliverables.map((d, i) => (
                             <span key={i} className="font-bold text-[10px] bg-emerald-100 text-emerald-800 px-1.5 py-0.5 rounded">
                               {d}
@@ -411,11 +354,10 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                     </div>
                     <div className="flex items-start gap-1">
                       <span className="font-semibold text-slate-700 shrink-0">Supported:</span>
-                      <span className="text-slate-600 text-[11px]">{(member.supportedDeliverables || []).join(', ') || 'General Project Support'}</span>
+                      <span className="text-slate-600 text-[11px]">{member.supportedDeliverables.join(', ') || 'General Project Support'}</span>
                     </div>
                   </div>
 
-                  {/* Key Responsibilities */}
                   <div className="space-y-1 border-t border-slate-100 pt-2 text-xs">
                     <span className="text-[10px] font-bold text-slate-500 uppercase tracking-wider block">Key Responsibilities:</span>
                     <ul className="space-y-1 text-[11px] text-slate-600">
@@ -429,7 +371,6 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                   </div>
                 </div>
 
-                {/* Card Footer: Contacts & Key Interface Counterpart */}
                 <div className="border-t border-slate-100 pt-3 space-y-1.5 text-xs text-slate-600">
                   <div className="flex items-center gap-2">
                     <Mail className="w-3.5 h-3.5 text-emerald-700 shrink-0" />
@@ -449,18 +390,50 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
             ))}
           </div>
 
-          {/* Group Meeting Protocols Section */}
-          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs space-y-4">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-              <div>
-                <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                  <Calendar className="w-4 h-4 text-emerald-700" />
-                  UNZA Group Meeting Protocols &amp; Cadence
-                </h3>
-                <p className="text-xs text-slate-500 mt-0.5">
-                  Internal and client-facing synchronizations maintaining the 50-day burn-down and 24-hour minute confirmation.
-                </p>
+          {/* Academic Supervisor Card */}
+          <div className="bg-gradient-to-br from-amber-50 via-orange-50 to-white border-2 border-amber-400 rounded-xl p-5 shadow-2xs">
+            <div className="flex items-start gap-4">
+              <div className="w-14 h-14 rounded-full bg-amber-500 text-white flex items-center justify-center font-bold text-lg shrink-0">
+                <GraduationCap className="w-7 h-7" />
               </div>
+              <div className="flex-1">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="text-[10px] font-bold uppercase tracking-wider bg-amber-500 text-white px-2.5 py-0.5 rounded-full">
+                    Academic Supervisor
+                  </span>
+                  <span className="text-[10px] font-bold bg-white text-amber-800 border border-amber-300 px-2 py-0.5 rounded-full">
+                    Faculty
+                  </span>
+                </div>
+                <h3 className="text-lg font-bold text-slate-900 mt-2">{ACADEMIC_SUPERVISOR.name}</h3>
+                <p className="text-xs font-semibold text-amber-800 mt-0.5">{ACADEMIC_SUPERVISOR.role}</p>
+                <p className="text-xs text-slate-600 mt-1">{ACADEMIC_SUPERVISOR.department}</p>
+                <div className="mt-3 flex flex-wrap items-center gap-4 text-xs text-slate-700">
+                  <span className="flex items-center gap-1.5">
+                    <Mail className="w-3.5 h-3.5 text-amber-700" />
+                    <a href={`mailto:${ACADEMIC_SUPERVISOR.email}`} className="font-mono text-[11px] hover:underline text-amber-800">
+                      {ACADEMIC_SUPERVISOR.email}
+                    </a>
+                  </span>
+                  <span className="flex items-center gap-1.5">
+                    <Phone className="w-3.5 h-3.5 text-amber-700" />
+                    {ACADEMIC_SUPERVISOR.phone}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {/* Group Meeting Protocols */}
+          <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs space-y-4">
+            <div>
+              <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
+                <Calendar className="w-4 h-4 text-emerald-700" />
+                UNZA Group Meeting Protocols &amp; Cadence
+              </h3>
+              <p className="text-xs text-slate-500 mt-0.5">
+                Internal and client-facing synchronizations maintaining the 50-day burn-down and 24-hour minute confirmation.
+              </p>
             </div>
 
             <div className="overflow-x-auto">
@@ -487,7 +460,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
             </div>
           </div>
 
-          {/* Database Schema & SQL Seed Section */}
+          {/* SQL Seed */}
           <div className="bg-white border border-slate-200 rounded-xl p-5 shadow-2xs space-y-3">
             <div className="flex items-center justify-between">
               <div>
@@ -496,7 +469,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                   SQL Database Seed: Team Role Assignments
                 </h3>
                 <p className="text-xs text-slate-500 mt-0.5">
-                  PostgreSQL / MySQL table definition and seed records for team members, portfolios, and deliverable associations.
+                  PostgreSQL / MySQL schema + seed for 8 students + academic supervisor, portfolios, and deliverable associations.
                 </p>
               </div>
 
@@ -522,16 +495,14 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
               </button>
             </div>
 
-            <div className="relative">
-              <pre className="bg-slate-900 text-slate-100 rounded-xl p-4 text-xs font-mono overflow-x-auto max-h-72 leading-relaxed border border-slate-800">
-                <code>{SQL_TEAM_ASSIGNMENT_SEED}</code>
-              </pre>
-            </div>
+            <pre className="bg-slate-900 text-slate-100 rounded-xl p-4 text-xs font-mono overflow-x-auto max-h-72 leading-relaxed border border-slate-800">
+              <code>{SQL_TEAM_ASSIGNMENT_SEED}</code>
+            </pre>
           </div>
         </div>
       )}
 
-      {/* Subtab 2: Communication Matrix */}
+      {/* ============ SUBTAB: COMMUNICATION MATRIX ============ */}
       {activeSubTab === 'matrix' && (
         <div className="bg-white border border-slate-200 rounded-xl overflow-hidden shadow-2xs">
           <div className="p-5 border-b border-slate-200 bg-slate-50/50">
@@ -557,9 +528,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
               <tbody className="divide-y divide-slate-100 text-slate-700">
                 {commMatrix.map((item) => (
                   <tr key={item.id} className="hover:bg-slate-50/70">
-                    <td className="p-3.5 font-bold text-slate-900">
-                      {item.eventName}
-                    </td>
+                    <td className="p-3.5 font-bold text-slate-900">{item.eventName}</td>
                     <td className="p-3.5">
                       <div className="font-semibold text-slate-800">{item.fromRole}</div>
                       <div className="text-[11px] text-slate-500">&darr; {item.toRole}</div>
@@ -573,12 +542,8 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                     <td className="p-3.5">
                       <span className="text-emerald-700 font-bold">{item.responseHours} Hours</span>
                     </td>
-                    <td className="p-3.5 font-medium text-slate-800">
-                      {item.outputDocument}
-                    </td>
-                    <td className="p-3.5 text-[11px] text-slate-500 max-w-xs">
-                      {item.tech4Reference}
-                    </td>
+                    <td className="p-3.5 font-medium text-slate-800">{item.outputDocument}</td>
+                    <td className="p-3.5 text-[11px] text-slate-500 max-w-xs">{item.tech4Reference}</td>
                   </tr>
                 ))}
               </tbody>
@@ -587,11 +552,10 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
         </div>
       )}
 
-      {/* Subtab 3: Official Channels & Rules */}
+      {/* ============ SUBTAB: OFFICIAL CHANNELS ============ */}
       {activeSubTab === 'channels' && (
         <div className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Left Card: 7 Official Channels */}
             <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-4">
               <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
                 <MessageSquare className="w-4 h-4 text-emerald-700" /> Agreed Official Channels Only
@@ -643,7 +607,6 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
               </div>
             </div>
 
-            {/* Right Card: Documentation Rules & Response Commitments */}
             <div className="space-y-6">
               <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-4">
                 <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
@@ -673,10 +636,9 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                 </div>
               </div>
 
-              {/* Shared Folder Visual Directory */}
               <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs space-y-3">
                 <h3 className="text-base font-bold text-slate-900 flex items-center gap-2">
-                  <FolderOpen className="w-4 h-4 text-emerald-700" /> Mandatory 10-Folder Repository Structure
+                  <Layers className="w-4 h-4 text-emerald-700" /> Mandatory 10-Folder Repository Structure
                 </h3>
                 <div className="grid grid-cols-2 gap-2 text-xs font-mono text-slate-700">
                   <div className="bg-slate-50 p-2 rounded border border-slate-100">01_Contracts</div>
@@ -696,7 +658,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
         </div>
       )}
 
-      {/* Subtab 4: Escalation Engine Rules */}
+      {/* ============ SUBTAB: ESCALATION ============ */}
       {activeSubTab === 'escalation' && (
         <div className="space-y-4">
           <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-2xs">
@@ -742,10 +704,10 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
         </div>
       )}
 
-      {/* Add Contact Modal */}
+      {/* ============ ADD CONTACT MODAL ============ */}
       {isAddModalOpen && (
         <div className="fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-4">
-          <div className="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative animate-in fade-in zoom-in-95">
+          <div className="bg-white border border-slate-200 rounded-2xl max-w-lg w-full p-6 shadow-2xl relative">
             <button
               onClick={() => setIsAddModalOpen(false)}
               className="absolute top-4 right-4 p-1.5 text-slate-400 hover:text-slate-600 rounded-full hover:bg-slate-100"
@@ -762,12 +724,11 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
               <div>
                 <label className="font-bold text-slate-700 block mb-1">Full Name & Title</label>
                 <input
-                  type="text"
-                  required
+                  type="text" required
                   placeholder="e.g. Dr. Jane Mwila"
                   value={newFullName}
                   onChange={(e) => setNewFullName(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-slate-800 focus:bg-white focus:border-emerald-600 focus:outline-hidden"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:bg-white focus:border-emerald-600 focus:outline-hidden"
                 />
               </div>
 
@@ -777,7 +738,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                   <select
                     value={newOrg}
                     onChange={(e) => setNewOrg(e.target.value as OrganisationType)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-slate-800 focus:bg-white focus:border-emerald-600 focus:outline-hidden"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:bg-white focus:border-emerald-600 focus:outline-hidden"
                   >
                     <option value="MoA">Ministry of Agriculture (MoA)</option>
                     <option value="Consultant">Consultant (UNZA)</option>
@@ -790,7 +751,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                   <select
                     value={newInterfaceType}
                     onChange={(e) => setNewInterfaceType(e.target.value as InterfaceType)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-slate-800 focus:bg-white focus:border-emerald-600 focus:outline-hidden"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:bg-white focus:border-emerald-600 focus:outline-hidden"
                   >
                     <option value="Contractual">Contractual</option>
                     <option value="Technical">Technical</option>
@@ -806,12 +767,11 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
               <div>
                 <label className="font-bold text-slate-700 block mb-1">Role Title</label>
                 <input
-                  type="text"
-                  required
+                  type="text" required
                   placeholder="e.g. Senior Database Administrator"
                   value={newRoleTitle}
                   onChange={(e) => setNewRoleTitle(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-slate-800 focus:bg-white focus:border-emerald-600 focus:outline-hidden"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:bg-white focus:border-emerald-600 focus:outline-hidden"
                 />
               </div>
 
@@ -819,12 +779,11 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                 <div>
                   <label className="font-bold text-slate-700 block mb-1">Official Email</label>
                   <input
-                    type="email"
-                    required
+                    type="email" required
                     placeholder="name@moa.gov.zm"
                     value={newEmail}
                     onChange={(e) => setNewEmail(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-slate-800 focus:bg-white focus:border-emerald-600 focus:outline-hidden"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:bg-white focus:border-emerald-600 focus:outline-hidden"
                   />
                 </div>
 
@@ -835,7 +794,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                     placeholder="+260 977 000000"
                     value={newPhone}
                     onChange={(e) => setNewPhone(e.target.value)}
-                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-slate-800 focus:bg-white focus:border-emerald-600 focus:outline-hidden"
+                    className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:bg-white focus:border-emerald-600 focus:outline-hidden"
                   />
                 </div>
               </div>
@@ -845,7 +804,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                 <select
                   value={newAuthority}
                   onChange={(e) => setNewAuthority(e.target.value as any)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-slate-800 focus:bg-white focus:border-emerald-600 focus:outline-hidden"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:bg-white focus:border-emerald-600 focus:outline-hidden"
                 >
                   <option value="Operational">Operational (Daily tasks)</option>
                   <option value="Technical">Technical (Architecture & schemas)</option>
@@ -861,7 +820,7 @@ export const CommunicationHub: React.FC<CommunicationHubProps> = ({
                   placeholder="Primary interfaces, approval scope, and coordination duty..."
                   value={newResp}
                   onChange={(e) => setNewResp(e.target.value)}
-                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs text-slate-800 focus:bg-white focus:border-emerald-600 focus:outline-hidden"
+                  className="w-full bg-slate-50 border border-slate-200 rounded-lg p-2 text-xs focus:bg-white focus:border-emerald-600 focus:outline-hidden"
                 />
               </div>
 
